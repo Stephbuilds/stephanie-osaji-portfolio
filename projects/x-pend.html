@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>X-PEND — Expense Approval Workflow — Stephanie Osaji</title>
+<title>X-PEND · Expense Approval Workflow · Stephanie Osaji</title>
 <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -25,11 +25,11 @@
   <div class="case-header">
     <a class="back-link" href="../index.html">← Back to all work</a>
     <span class="tag workflow">Workflow Automation</span>
-    <h1>X-PEND — Expense Approval Workflow</h1>
+    <h1>X-PEND · Expense Approval Workflow</h1>
     <p class="summary">
       An internal tool for employees to submit expenses with receipts and for
       managers to approve or deny them. What makes this case study interesting
-      isn't the first version — it's three rounds of real iteration, each one
+      isn't the first version. It's three rounds of iteration, each one
       triggered by a specific piece of feedback rather than a redesign for its
       own sake.
     </p>
@@ -50,7 +50,7 @@
     <h2>The problem</h2>
     <p>
       Employees need a simple way to submit an expense (amount, reason, date,
-      optional receipt) and have a manager review, approve, or deny it — with
+      optional receipt) and have a manager review, approve, or deny it, with
       enough context (who submitted it, what proof exists) that approval
       decisions are fast and defensible.
     </p>
@@ -63,12 +63,12 @@
         <h4>v1 → v2: from a closed roster to open self-service login</h4>
         <p>
           The first version used a fixed dropdown of pre-defined employee and
-          manager names — fine for a demo, wrong for a real company. When the
-          requirement came in that "access should be open to everyone, logging
-          in with a company email," I removed the fixed roster entirely and
-          replaced it with self-reported name + email identity, with managers
-          kept separate from employees only by which dashboard they're using —
-          not a hardcoded permission list.
+          manager names. That was fine for a demo, but broke down for actual
+          use. When the requirement came in that "access should be open to
+          everyone, logging in with a company email," I removed the fixed
+          roster entirely and replaced it with self-reported name + email
+          identity, with managers kept separate from employees only by which
+          dashboard they're using, not a hardcoded permission list.
         </p>
       </div>
       <div class="decision-item">
@@ -77,7 +77,7 @@
           The employee and manager views started as two separate pages linked
           by navigation. After direct feedback that this felt like unnecessary
           browser-tab clutter, I merged both into a single page with an in-app
-          Employee/Manager tab switcher — same functionality, zero page reloads,
+          Employee/Manager tab switcher: same functionality, zero page reloads,
           and actions in one tab (like an approval) now live-refresh the other.
         </p>
       </div>
@@ -86,10 +86,10 @@
         <p>
           The "Submit expense" button appeared disabled with no clear reason
           why. The surface-level fix would have been tweaking the button's
-          disabled state. The actual root cause was structural: the form was
+          disabled state. The root cause was structural: the form was
           visible before login, so nothing signaled that logging in was the
-          real prerequisite. The fix was gating the entire form behind a login
-          state — the button issue disappeared because the confusing state
+          prerequisite. The fix was gating the entire form behind a login
+          state. The button issue disappeared because the confusing state
           it was in could no longer occur.
         </p>
       </div>
@@ -102,11 +102,11 @@
       <div class="decision-item">
         <h4>Managers can self-approve</h4>
         <p>
-          Rather than force a separate approver for every submission — unrealistic
-          for a small team — a manager can submit their own expense on the
-          employee side and approve it themselves on the manager side. It's an
-          intentional trust-based design choice for an internal tool, not an
-          oversight.
+          Rather than force a separate approver for every submission
+          (unrealistic for a small team), a manager can submit their own
+          expense on the employee side and approve it themselves on the
+          manager side. It's an intentional, trust-based design choice for an
+          internal tool, not an oversight.
         </p>
       </div>
       <div class="decision-item">
@@ -125,7 +125,7 @@
   <section class="case-section">
     <h2>Outcome</h2>
     <div class="outcome-grid">
-      <div class="outcome-stat"><div class="num">3</div><div class="label">Shipped iterations from real feedback</div></div>
+      <div class="outcome-stat"><div class="num">3</div><div class="label">Shipped iterations from user feedback</div></div>
       <div class="outcome-stat"><div class="num">2 → 1</div><div class="label">Pages merged into one product</div></div>
       <div class="outcome-stat"><div class="num">0</div><div class="label">Hardcoded users at launch config</div></div>
       <div class="outcome-stat"><div class="num">Live</div><div class="label">Cross-tab refresh on approve/deny</div></div>

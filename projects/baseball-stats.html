@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Baseball Stats + AI Player Bios — Stephanie Osaji</title>
+<title>Baseball Stats + AI Player Bios · Stephanie Osaji</title>
 <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -29,8 +29,8 @@
     <p class="summary">
       A data product built around a live third-party API: fully sortable and
       editable stats persisted to a local database, a derived metric shipped as
-      a follow-on feature request, and an on-demand LLM-generated player bio —
-      complete with a real incident diagnosed and resolved during development.
+      a follow-on feature request, and an on-demand LLM-generated player bio,
+      plus an incident diagnosed and resolved during development.
     </p>
     <div class="case-meta">
       <span class="stack-chip">Node.js</span>
@@ -48,10 +48,10 @@
   <section class="case-section">
     <h2>The problem</h2>
     <p>
-      Take a public, third-party baseball statistics API and turn it into a real
-      product: something a user can sort, edit, and trust as a source of truth —
-      not just a static table dump — and then layer in an AI capability that
-      makes the data more useful, without breaking the bank on API calls.
+      Take a public, third-party baseball statistics API and turn it into a
+      product: something a user can sort, edit, and trust as a source of truth,
+      not just a static table dump, and then layer in an AI capability that adds
+      genuine value without exceeding free-tier API limits.
     </p>
   </section>
 
@@ -61,11 +61,11 @@
       <div class="decision-item">
         <h4>Local database as source of truth, seeded once</h4>
         <p>
-          The app fetches the source API exactly once, on first run, then never
-          again — all reads and edits after that hit the local SQLite database.
+          The app fetches the source API exactly once, on first run, and never
+          again. All reads and edits after that hit the local SQLite database.
           This was a deliberate choice: it means user edits persist across
-          restarts and are never silently overwritten by a re-fetch, which I
-          verified by editing a stat, restarting the server, and confirming the
+          restarts and are never silently overwritten by a re-fetch. I verified
+          this by editing a stat, restarting the server, and confirming the
           edit survived.
         </p>
       </div>
@@ -74,7 +74,7 @@
         <p>
           Inspecting the live API turned up inconsistent field names (one field
           literally called "third baseman" actually held triples) and no unique
-          identifier — with two duplicate player names in 172 records. Rather
+          identifier, with two duplicate player names among 172 records. Rather
           than build on top of that, I mapped raw fields to sane column names,
           synthesized a primary key, and relabeled everything for display while
           preserving the original data underneath.
@@ -85,7 +85,7 @@
         <p>
           The player bio feature calls an LLM, and free-tier LLM APIs are
           rate-limited. Instead of generating a bio on every click, the first
-          generation is cached in the database — later views are instant
+          generation is cached in the database. Later views are instant
           (~20ms) and cost nothing, with a manual "Regenerate" option for when a
           bio needs refreshing after a stat edit.
         </p>
@@ -95,8 +95,8 @@
         <p>
           When asked to add a "Hits Per Game" column after launch, I computed it
           client-side from existing Hits and Games fields rather than storing
-          it — so it's always correct even if those underlying stats are edited
-          later, with zero schema changes required.
+          it. That way, it stays correct even if those underlying stats are
+          edited later, with zero schema changes required.
         </p>
       </div>
     </div>
@@ -106,23 +106,23 @@
     <h2>The incident: a misleading quota error</h2>
     <div class="highlight-box story">
       <p>
-        After wiring up the Gemini integration and adding a real API key, the
+        After wiring up the Gemini integration and adding an API key, the
         first request failed with <em>"Quota exceeded... limit: 0."</em> That
-        reads like an account or billing problem, and my first hypothesis was
+        read like an account or billing problem, and my first hypothesis was
         exactly that. Instead of guessing further, I queried Gemini's live model
-        list directly with the same key — the model I'd used
+        list directly with the same key. The model I'd used
         (<code>gemini-2.0-flash</code>) was still listed, but a direct test
         against the newer <code>gemini-2.5-flash</code> came back with a much
         clearer signal: <em>"no longer available to new users."</em>
       </p>
       <p>
-        The actual root cause was that the account was provisioned on a newer
+        The root cause was that the account was provisioned on a newer
         model generation than the one I'd hardcoded. The fix wasn't just
-        swapping in a working model name — it was switching to
+        swapping in a working model name. It was switching to
         <code>gemini-flash-latest</code>, an alias Google maintains to always
         point at the current default model, so the same failure mode can't
         silently recur the next time a model gets deprecated. I verified the fix
-        by generating a real bio end-to-end and confirming the cache worked.
+        by generating a bio end-to-end and confirming the cache worked.
       </p>
     </div>
   </section>
