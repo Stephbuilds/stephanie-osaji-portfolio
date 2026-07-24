@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Team Tracker — Stephanie Osaji</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+<div class="nav-shell">
+  <nav class="site-nav">
+    <a class="brand-lockup" href="../index.html">
+      <div class="brand-mark">SO</div>
+      <div class="brand-name">Stephanie Osaji</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Work</a>
+      <a href="../index.html#categories">Focus areas</a>
+      <a href="../contact.html" class="cta">Contact</a>
+    </div>
+  </nav>
+</div>
+
+<main class="wrap">
+  <div class="case-header">
+    <a class="back-link" href="../index.html">← Back to all work</a>
+    <span class="tag internal">Internal Tools</span>
+    <h1>Team Tracker</h1>
+    <p class="summary">
+      A lightweight daily status tracker: each team member logs what they're
+      working on and its status, giving the whole team visibility without
+      standup meetings or a heavyweight project management tool.
+    </p>
+    <div class="case-meta">
+      <span class="stack-chip">Node.js</span>
+      <span class="stack-chip">Express</span>
+      <span class="stack-chip">SQLite</span>
+      <span class="stack-chip">Vanilla JS</span>
+    </div>
+    <div class="case-hero-shot">
+      <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      <img src="../assets/team-tracker-hero.png" alt="Team Tracker app: team activity feed with status pills" />
+    </div>
+  </div>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>
+      Small teams often don't need a full project management suite — they need
+      a fast, no-friction way to answer "what is everyone working on right now,
+      and how far along is it?" without the overhead of logins, tickets, or
+      configuration.
+    </p>
+  </section>
+
+  <section class="case-section">
+    <h2>Key decisions</h2>
+    <div class="decision-list">
+      <div class="decision-item">
+        <h4>Deliberately low-friction identity</h4>
+        <p>
+          No passwords, no accounts — each person picks their name from a
+          roster and that identity is remembered locally. It's an explicit
+          tradeoff: this model is designed for a small, trusted internal team
+          where the goal is visibility, not access control.
+        </p>
+      </div>
+      <div class="decision-item">
+        <h4>Status as a first-class, editable field</h4>
+        <p>
+          Every logged activity carries a status (Not Started / In Progress /
+          Completed) that only its owner can change, with the time since the
+          last status change shown inline — so staleness is visible at a
+          glance, not something you have to ask about.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>Outcome</h2>
+    <div class="outcome-grid">
+      <div class="outcome-stat"><div class="num">0</div><div class="label">Passwords or accounts required</div></div>
+      <div class="outcome-stat"><div class="num">1</div><div class="label">Click to log an activity</div></div>
+      <div class="outcome-stat"><div class="num">Live</div><div class="label">Status visibility across the team</div></div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>Skills demonstrated</h2>
+    <div class="skills-row">
+      <span class="skill-pill">Scoping for a specific team size</span>
+      <span class="skill-pill">Low-friction UX design</span>
+      <span class="skill-pill">Internal tooling tradeoffs</span>
+    </div>
+  </section>
+
+  <div class="case-footer-nav">
+    <a class="back-link" href="../index.html">← Back to all work</a>
+    <a class="btn btn-secondary" href="baseball-stats.html">Next case study: Baseball Stats →</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© 2026 Stephanie Osaji</p>
+    <div class="footer-links">
+      <a href="mailto:stephosaji27@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/stephanie-osaji" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

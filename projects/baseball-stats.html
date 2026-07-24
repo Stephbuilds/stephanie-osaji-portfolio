@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Baseball Stats + AI Player Bios — Stephanie Osaji</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+<div class="nav-shell">
+  <nav class="site-nav">
+    <a class="brand-lockup" href="../index.html">
+      <div class="brand-mark">SO</div>
+      <div class="brand-name">Stephanie Osaji</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Work</a>
+      <a href="../index.html#categories">Focus areas</a>
+      <a href="../contact.html" class="cta">Contact</a>
+    </div>
+  </nav>
+</div>
+
+<main class="wrap">
+  <div class="case-header">
+    <a class="back-link" href="../index.html">← Back to all work</a>
+    <span class="tag ai">AI &amp; LLM Products</span>
+    <h1>Baseball Stats + AI Player Bios</h1>
+    <p class="summary">
+      A data product built around a live third-party API: fully sortable and
+      editable stats persisted to a local database, a derived metric shipped as
+      a follow-on feature request, and an on-demand LLM-generated player bio —
+      complete with a real incident diagnosed and resolved during development.
+    </p>
+    <div class="case-meta">
+      <span class="stack-chip">Node.js</span>
+      <span class="stack-chip">Express</span>
+      <span class="stack-chip">SQLite</span>
+      <span class="stack-chip">Google Gemini API</span>
+      <span class="stack-chip">Vanilla JS</span>
+    </div>
+    <div class="case-hero-shot">
+      <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      <img src="../assets/baseball-stats-hero.png" alt="Baseball Stats app: sortable, editable player statistics table" />
+    </div>
+  </div>
+
+  <section class="case-section">
+    <h2>The problem</h2>
+    <p>
+      Take a public, third-party baseball statistics API and turn it into a real
+      product: something a user can sort, edit, and trust as a source of truth —
+      not just a static table dump — and then layer in an AI capability that
+      makes the data more useful, without breaking the bank on API calls.
+    </p>
+  </section>
+
+  <section class="case-section">
+    <h2>Key decisions</h2>
+    <div class="decision-list">
+      <div class="decision-item">
+        <h4>Local database as source of truth, seeded once</h4>
+        <p>
+          The app fetches the source API exactly once, on first run, then never
+          again — all reads and edits after that hit the local SQLite database.
+          This was a deliberate choice: it means user edits persist across
+          restarts and are never silently overwritten by a re-fetch, which I
+          verified by editing a stat, restarting the server, and confirming the
+          edit survived.
+        </p>
+      </div>
+      <div class="decision-item">
+        <h4>Handled messy source data instead of assuming it was clean</h4>
+        <p>
+          Inspecting the live API turned up inconsistent field names (one field
+          literally called "third baseman" actually held triples) and no unique
+          identifier — with two duplicate player names in 172 records. Rather
+          than build on top of that, I mapped raw fields to sane column names,
+          synthesized a primary key, and relabeled everything for display while
+          preserving the original data underneath.
+        </p>
+      </div>
+      <div class="decision-item">
+        <h4>Cost-aware AI integration: cache, don't regenerate</h4>
+        <p>
+          The player bio feature calls an LLM, and free-tier LLM APIs are
+          rate-limited. Instead of generating a bio on every click, the first
+          generation is cached in the database — later views are instant
+          (~20ms) and cost nothing, with a manual "Regenerate" option for when a
+          bio needs refreshing after a stat edit.
+        </p>
+      </div>
+      <div class="decision-item">
+        <h4>Shipped a follow-on feature without a database migration</h4>
+        <p>
+          When asked to add a "Hits Per Game" column after launch, I computed it
+          client-side from existing Hits and Games fields rather than storing
+          it — so it's always correct even if those underlying stats are edited
+          later, with zero schema changes required.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>The incident: a misleading quota error</h2>
+    <div class="highlight-box story">
+      <p>
+        After wiring up the Gemini integration and adding a real API key, the
+        first request failed with <em>"Quota exceeded... limit: 0."</em> That
+        reads like an account or billing problem, and my first hypothesis was
+        exactly that. Instead of guessing further, I queried Gemini's live model
+        list directly with the same key — the model I'd used
+        (<code>gemini-2.0-flash</code>) was still listed, but a direct test
+        against the newer <code>gemini-2.5-flash</code> came back with a much
+        clearer signal: <em>"no longer available to new users."</em>
+      </p>
+      <p>
+        The actual root cause was that the account was provisioned on a newer
+        model generation than the one I'd hardcoded. The fix wasn't just
+        swapping in a working model name — it was switching to
+        <code>gemini-flash-latest</code>, an alias Google maintains to always
+        point at the current default model, so the same failure mode can't
+        silently recur the next time a model gets deprecated. I verified the fix
+        by generating a real bio end-to-end and confirming the cache worked.
+      </p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>Outcome</h2>
+    <div class="outcome-grid">
+      <div class="outcome-stat"><div class="num">172</div><div class="label">Player records, self-seeding</div></div>
+      <div class="outcome-stat"><div class="num">~20ms</div><div class="label">Cached bio response time</div></div>
+      <div class="outcome-stat"><div class="num">0</div><div class="label">Schema changes for the H/G feature</div></div>
+      <div class="outcome-stat"><div class="num">100%</div><div class="label">Edit persistence across restarts</div></div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <h2>Skills demonstrated</h2>
+    <div class="skills-row">
+      <span class="skill-pill">Third-party API integration</span>
+      <span class="skill-pill">Data quality triage</span>
+      <span class="skill-pill">LLM product integration</span>
+      <span class="skill-pill">Cost/rate-limit-aware design</span>
+      <span class="skill-pill">Production incident debugging</span>
+      <span class="skill-pill">Iterative feature delivery</span>
+      <span class="skill-pill">Security review (input validation)</span>
+    </div>
+  </section>
+
+  <div class="case-footer-nav">
+    <a class="back-link" href="../index.html">← Back to all work</a>
+    <a class="btn btn-secondary" href="x-pend.html">Next case study: X-PEND →</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© 2026 Stephanie Osaji</p>
+    <div class="footer-links">
+      <a href="mailto:stephosaji27@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/stephanie-osaji" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
